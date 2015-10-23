@@ -20,7 +20,10 @@
 
 
 PARTITIONS=`sh partitions.sh`
-DBT3_DB=dbt3_db
+
+if [ -z $DBT3_DB ]; then 
+	DBT3_DB=dbt3_db
+fi
 
 echo "Creating Database"
 createdb -uactian $DBT3_DB
@@ -239,8 +242,14 @@ EOF
 echo Database and tables all created and data loaded at `date`.
 
 # Now gather statistics on the tables
-# Just gather stats on all tables and columns by default.
 
 echo Now gathering statistics on the data distribution
 
-optimizedb $DBT3_DB
+optimizedb -zns -zfq -zr1000 -zu1000 $DBT3_DB -rcustomer2
+optimizedb -zns -zfq -zr1000 -zu1000 $DBT3_DB -rlineitem2
+optimizedb -zns -zfq -zr1000 -zu1000 $DBT3_DB -rnation2
+optimizedb -zns -zfq -zr1000 -zu1000 $DBT3_DB -rorders2
+optimizedb -zns -zfq -zr1000 -zu1000 $DBT3_DB -rpartsupp2
+optimizedb -zns -zfq -zr1000 -zu1000 $DBT3_DB -rpart2
+optimizedb -zns -zfq -zr1000 -zu1000 $DBT3_DB -rregion2
+optimizedb -zns -zfq -zr1000 -zu1000 $DBT3_DB -rsupplier2
